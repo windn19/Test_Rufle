@@ -10,3 +10,6 @@
 >> End<<
 
 *New message*
+
+---
+Hello - **2**
