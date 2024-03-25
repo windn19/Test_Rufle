@@ -1,4 +1,5 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer, QTime
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
         QApplication, QWidget, 
         QHBoxLayout, QVBoxLayout, 
@@ -89,9 +90,64 @@ class TestWin(QWidget):
     def next_click(self):
         self.hide()
         self.fw = FinalWin()
+    
+    def timer1Event(self):
+        global time
+        time = time.addSecs(-1)
+        self.text_timer.setText(time.toString("hh:mm:ss"))
+        self.text_timer.setFont(QFont("Times", 36, QFont.Bold))
+        self.text_timer.setStyleSheet("color: rgb(0,0,0)")
+        if time.toString("hh:mm:ss") == "00:00:00":
+            self.timer.stop()
+    
+    def timer2Event(self):
+        global time
+        time = time.addSecs(-1)
+        self.text_timer.setText(time.toString('ss'))
+        self.text_timer.setFont(QFont('Arial', 36, QFont.Bold))
+        self.text_timer.setStyleSheet('color: rgb(255,0,0)')
+        if time.toString('ss') == '00':
+            self.timer.stop()
+        
+    def timer3Event(self):
+        global time
+        time = time.addSecs(-1)
+        self.text_timer.setText(time.toString('mm:ss'))
+        self.text_timer.setFont(QFont('Arial', 36, QFont.Bold))
+        if 45 <= int(time.toString('ss')) or int(time.toString('ss')) <= 15:
+            self.text_timer.setStyleSheet('color: rgb(0,255,0)')
+        else:
+            self.text_timer.setStyleSheet('color: rgb(0,0,0)')
+        if time.toString('ss') == '00':
+            self.timer.stop()
+        
+    def timer_test(self):
+        global time
+        time = QTime(0, 0, 15)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer1Event)
+        self.timer.start(1000)
+    
+    def timer_sid(self):
+        global time
+        time = QTime(0, 0, 30)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer2Event)
+        self.timer.start(1500)
+    
+    def timer_final(self):
+        global time
+        time = QTime(0, 1, 0)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer3Event)
+        self.timer.start(1000)
+        
 
     def connects(self):
         self.btn_next.clicked.connect(self.next_click)
+        self.btn_test1.clicked.connect(self.timer_test)
+        self.btn_test2.clicked.connect(self.timer_sid)
+        self.btn_test3.clicked.connect(self.timer_final)
 
     ''' устанавливает, как будет выглядеть окно (надпись, размер, место) '''
     def set_appear(self):
