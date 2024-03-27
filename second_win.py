@@ -9,6 +9,15 @@ from PyQt5.QtWidgets import (
 from instr import *
 from final_win import *
 
+
+class Experiment:
+    def __init__(self, age, p1, p2, p3):
+        self.age = int(age)
+        self.p1 = int(p1)
+        self.p2 = int(p2)
+        self.p3 = int(p3)
+
+
 class TestWin(QWidget):
     def __init__(self):
         ''' окно, в котором проводится опрос '''
@@ -25,13 +34,6 @@ class TestWin(QWidget):
         
         # старт:
         self.show()
-    
-    def next_click(self):
-        self.tw = TestWin()
-        self.hide()
-
-    def connects(self):
-        self.btn_next.clicked.connect(self.next_click)
 
     ''' устанавливает, как будет выглядеть окно (надпись, размер, место) '''
     def set_appear(self):
@@ -56,13 +58,9 @@ class TestWin(QWidget):
         self.text_timer = QLabel(txt_timer)
 
         self.line_name = QLineEdit(txt_hintname)
-
         self.line_age = QLineEdit(txt_hintage)
-
         self.line_test1 = QLineEdit(txt_hinttest1)
-
         self.line_test2 = QLineEdit(txt_hinttest2)
-
         self.line_test3 = QLineEdit(txt_hinttest3)
 
         self.l_line = QVBoxLayout()
@@ -89,7 +87,11 @@ class TestWin(QWidget):
     
     def next_click(self):
         self.hide()
-        self.fw = FinalWin()
+        exp = Experiment(age=self.line_age.text(),
+                         p1=self.line_test1.text(),
+                         p2=self.line_test2.text(),
+                         p3=self.line_test3.text())
+        self.fw = FinalWin(exp)
     
     def timer1Event(self):
         global time
